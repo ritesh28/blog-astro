@@ -1,0 +1,59 @@
+---
+import CardWithImage from "@/components/CardWithImage.astro";
+import SearchInput from "@/components/SearchInput.astro";
+import LeftArrow from "@/images/simple-icons/left-arrow.svg";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const params = Astro.url.searchParams;
+const query = params.get("query");
+if (!query) return Astro.redirect("/blogs");
+
+const AllBlogs = await getCollection("blog");
+
+// Filter articles based on query
+const filteredBlogs = AllBlogs.filter((blog) => {
+  const titleMatch: boolean = blog.data.title
+    .toLowerCase()
+    .includes(query.toLowerCase());
+
+  const bodyMatch: boolean = blog.body
+    .toLowerCase()
+    .includes(query.toLowerCase());
+
+  const slugMatch: boolean = blog.slug
+    .toLowerCase()
+    .includes(query.toLowerCase());
+
+  return titleMatch || bodyMatch || slugMatch;
+});
+---
+
+<MainLayout>
+  <section>
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <a
+        href="/blogs"
+        class="not-prose text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center my-6 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        <LeftArrow
+          class="w-3.5 h-3.5 me-2"
+          aria-hidden="true"
+          fill="currentColor"
+        />
+        Back To All Blogs
+      </a>
+      <div class="mb-10">
+        <SearchInput />
+      </div>
+      <p class="text-2xl text-gray-900 dark:text-white pb-3 mt-6">
+        Results For <strong>{query}</strong>
+      </p>
+      <div
+        class="grid gap-8 justify-items-center items-stretch md:grid-cols-2 xl:grid-cols-3"
+      >
+        {filteredBlogs.map((blog) => <CardWithImage blog={blog} />)}
+      </div>
+    </div>
+  </section>
+</MainLayout>

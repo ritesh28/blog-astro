@@ -2,8 +2,9 @@
 import Footer from "@/components/Footer.astro";
 import Navbar from "@/components/Navbar.astro";
 import "@/styles/global.css";
+import { capitalize } from "@/utils/capitalize";
 
-const { title = "Developer Blogs" } = Astro.props;
+const { title = "" } = Astro.props;
 
 interface Props {
   title?: string;
@@ -17,17 +18,21 @@ interface Props {
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>
+      {title ? `${capitalize(title)} | Developer Blogs` : "Developer Blogs"}
+    </title>
   </head>
   <body>
     <div class="flex flex-col min-h-screen">
       <div class="sticky top-0 z-10">
         <Navbar />
       </div>
-      <div class="grow">
+      <div class="grow bg-white dark:bg-gray-900">
         <slot />
       </div>
-      <Footer />
+      <div class="bg-white dark:bg-gray-900">
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

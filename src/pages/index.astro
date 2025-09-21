@@ -1,6 +1,6 @@
 ---
 import CardWithImage from "@/components/CardWithImage.astro";
-import Search from "@/components/Search.astro";
+import SearchInput from "@/components/SearchInput.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { CONSTANTS } from "@/utils/constants";
 import { getCollection } from "astro:content";
@@ -10,7 +10,7 @@ const slicedBlogs = AllBlogs.slice(0, CONSTANTS.HOME_PAGE_BLOGS_MAX_COUNT);
 ---
 
 <MainLayout>
-  <section class="bg-white dark:bg-gray-900 h-full">
+  <section>
     <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
       <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
         <h2
@@ -27,9 +27,11 @@ const slicedBlogs = AllBlogs.slice(0, CONSTANTS.HOME_PAGE_BLOGS_MAX_COUNT);
         </p>
       </div>
       <div class="my-10 max-w-[26rem] mx-auto">
-        <Search />
+        <SearchInput />
       </div>
-      <div class="grid gap-8 place-items-center md:grid-cols-2 xl:grid-cols-3">
+      <div
+        class="grid gap-8 justify-items-center items-stretch md:grid-cols-2 xl:grid-cols-3"
+      >
         {slicedBlogs.map((blog) => <CardWithImage blog={blog} />)}
       </div>
     </div>

@@ -14,7 +14,7 @@ const iconLinks = [
     id: "github-link",
     IconSVG: Github,
     tooltip: "Github Code",
-    url: import.meta.env.PUBLIC_GITHUB_CODE_LINK,
+    url: import.meta.env.PUBLIC_GITHUB_REPO_LINK,
   },
   {
     id: "linkedin-link",
@@ -38,7 +38,7 @@ const pageTabLinks = [
 
 function isCurrent(slug: string) {
   const currentPath = Astro.url.pathname;
-  return currentPath.includes(slug);
+  return currentPath === `/${slug}`;
 }
 ---
 

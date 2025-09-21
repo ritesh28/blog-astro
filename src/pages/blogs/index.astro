@@ -1,0 +1,72 @@
+---
+import CardWithImage from "@/components/CardWithImage.astro";
+import SearchInput from "@/components/SearchInput.astro";
+import LeftArrow from "@/images/simple-icons/left-arrow.svg";
+import RightArrow from "@/images/simple-icons/right-arrow.svg";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { cn } from "@/utils/className";
+import { CONSTANTS } from "@/utils/constants";
+import { getCollection } from "astro:content";
+
+const params = Astro.url.searchParams;
+const page = parseInt(params.get("page") ?? "1", 10) || 1;
+
+const AllBlogs = await getCollection("blog");
+const startIndex = (page - 1) * CONSTANTS.BLOGS_PAGE_BLOGS_PER_PAGE;
+const endIndex = startIndex + CONSTANTS.BLOGS_PAGE_BLOGS_PER_PAGE;
+const currentPageBlogs = AllBlogs.slice(startIndex, endIndex);
+
+const disablePreviousButton = startIndex < 1;
+const disableNextButton = endIndex > AllBlogs.length - 2;
+---
+
+<MainLayout title="Blogs">
+  <section>
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <h1
+        class="mb-4 text-2xl lg:text-3xl tracking-tight text-gray-900 dark:text-white"
+      >
+        All Blogs
+      </h1>
+      <div class="mb-10">
+        <SearchInput />
+      </div>
+      <div
+        class="grid gap-8 justify-items-center items-stretch md:grid-cols-2 xl:grid-cols-3"
+      >
+        {currentPageBlogs.map((blog) => <CardWithImage blog={blog} />)}
+      </div>
+      <div class="flex justify-between my-6">
+        <a
+          href=`/blogs?page=${page-1}`
+          aria-disabled={disablePreviousButton}
+          class={cn(
+            "flex items-center justify-center px-3 h-8 me-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+            disablePreviousButton && "pointer-events-none"
+          )}
+        >
+          <LeftArrow
+            class="w-3.5 h-3.5 me-2"
+            aria-hidden="true"
+            fill="currentColor"
+          />
+          Previous
+        </a>
+        <a
+          href=`/blogs?page=${page+1}`
+          class={cn(
+            "flex items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+            disableNextButton && "pointer-events-none"
+          )}
+        >
+          Next
+          <RightArrow
+            class="w-3.5 h-3.5 ms-2"
+            aria-hidden="true"
+            fill="currentColor"
+          />
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
