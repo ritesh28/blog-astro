@@ -1,0 +1,4 @@
+export const CONSTANTS = {
+  HOME_PAGE_BLOGS_MAX_COUNT: 5,
+  BLOGS_PAGE_BLOGS_PER_PAGE: 6,
+} as const;

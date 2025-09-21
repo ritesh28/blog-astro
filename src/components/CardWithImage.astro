@@ -1,0 +1,39 @@
+---
+import { formatDate } from "@/utils/formatDate";
+import type { CollectionEntry } from "astro:content";
+import { readingTime } from "reading-time-estimator";
+import Tags from "./Tags.astro";
+const { blog } = Astro.props;
+
+interface Props {
+  blog: CollectionEntry<"blog">;
+}
+---
+
+<article
+  class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
+>
+  <a href={`/blogs/${blog.slug}`}>
+    <img
+      class="rounded-t-lg hover:opacity-90"
+      src={blog.data.imageURL}
+      alt="blog image"
+    />
+  </a>
+  <div class="p-5">
+    <a href={`/blogs/${blog.slug}`}>
+      <h5
+        class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+      >
+        {blog.data.title}
+      </h5>
+    </a>
+    <p class="font-normal text-gray-700 dark:text-gray-400">
+      {formatDate(blog.data.pubDate)}
+    </p>
+    <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
+      {readingTime(blog.body).text}
+    </p>
+    <Tags tags={blog.data.tags} />
+  </div>
+</article>

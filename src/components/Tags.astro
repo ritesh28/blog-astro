@@ -1,0 +1,25 @@
+---
+import { capitalize } from "@/utils/capitalize";
+import { cn } from "@/utils/className";
+
+const { tags } = Astro.props;
+
+interface Props {
+  tags: string[];
+}
+---
+
+<div class="flex flex-wrap gap-2">
+  {
+    tags.map((tag: string, index: number) => (
+      <span
+        class={cn(
+          "px-2 py-1 text-white rounded-full text-xs hover:opacity-90",
+          index % 2 === 0 ? "bg-green-500" : "bg-primary-500"
+        )}
+      >
+        <a href={`/articles/tag/${tag}`}>#{capitalize(tag)}</a>
+      </span>
+    ))
+  }
+</div>

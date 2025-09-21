@@ -1,7 +1,37 @@
 ---
+import CardWithImage from "@/components/CardWithImage.astro";
+import Search from "@/components/Search.astro";
 import MainLayout from "@/layouts/MainLayout.astro";
+import { CONSTANTS } from "@/utils/constants";
+import { getCollection } from "astro:content";
+
+const AllBlogs = await getCollection("blog");
+const slicedBlogs = AllBlogs.slice(0, CONSTANTS.HOME_PAGE_BLOGS_MAX_COUNT);
 ---
 
 <MainLayout>
-  <div>Hello</div>
+  <section class="bg-white dark:bg-gray-900 h-full">
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <div class="mx-auto max-w-screen-sm text-center lg:mb-16 mb-8">
+        <h2
+          class="mb-4 text-3xl lg:text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white"
+        >
+          Our Developer Blog
+        </h2>
+        <p class="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+          Welcome to our tech blog dedicated to exploring the practical use of
+          popular JavaScript and Python libraries and more. Whether you're a
+          beginner or an experienced developer, you'll find clear guides, code
+          examples, and tips to help you get the most out of these powerful
+          tools in your projects.
+        </p>
+      </div>
+      <div class="my-10 max-w-[26rem] mx-auto">
+        <Search />
+      </div>
+      <div class="grid gap-8 place-items-center md:grid-cols-2 xl:grid-cols-3">
+        {slicedBlogs.map((blog) => <CardWithImage blog={blog} />)}
+      </div>
+    </div>
+  </section>
 </MainLayout>
