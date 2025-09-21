@@ -1,0 +1,30 @@
+---
+import Tags from "@/components/Tags.astro";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+
+const AllBlogs = await getCollection("blog");
+const flatTagList = [
+  ...new Set(AllBlogs.flatMap((blog) => blog.data.tags)),
+].sort();
+---
+
+<MainLayout title="Tags">
+  <section>
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <h1
+        class="mb-6 text-2xl lg:text-3xl tracking-tight text-gray-900 dark:text-white"
+      >
+        Tags
+      </h1>
+      <h3
+        class="mb-4 text-l lg:text-xl tracking-tight text-gray-900 dark:text-white"
+      >
+        All the tags used in blogs.
+      </h3>
+      <div>
+        <Tags tags={flatTagList} />
+      </div>
+    </div>
+  </section>
+</MainLayout>

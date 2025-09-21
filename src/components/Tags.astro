@@ -1,6 +1,6 @@
 ---
 import { capitalize } from "@/utils/capitalize";
-import { cn } from "@/utils/className";
+import randomColor from "randomcolor";
 
 const { tags } = Astro.props;
 
@@ -13,10 +13,13 @@ interface Props {
   {
     tags.map((tag: string, index: number) => (
       <span
-        class={cn(
-          "px-2 py-1 text-white rounded-full text-xs hover:opacity-90",
-          index % 2 === 0 ? "bg-green-500" : "bg-primary-500"
-        )}
+        class="px-2 py-1 text-white rounded-full text-xs hover:opacity-90"
+        style={{
+          backgroundColor: randomColor({
+            seed: tag,
+            luminosity: "dark",
+          }),
+        }}
       >
         <a href={`/tags/${tag}`}>#{capitalize(tag)}</a>
       </span>

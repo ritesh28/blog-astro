@@ -11,7 +11,7 @@ if (!query) return Astro.redirect("/blogs");
 
 const AllBlogs = await getCollection("blog");
 
-// Filter articles based on query
+// Filter blogs based on query
 const filteredBlogs = AllBlogs.filter((blog) => {
   const titleMatch: boolean = blog.data.title
     .toLowerCase()
@@ -47,7 +47,9 @@ const filteredBlogs = AllBlogs.filter((blog) => {
         <SearchInput />
       </div>
       <p class="text-2xl text-gray-900 dark:text-white pb-3 mt-6">
-        Results For <strong>{query}</strong>
+        Results For <span class="font-medium text-blue-600 dark:text-blue-500"
+          >{query}</span
+        >
       </p>
       <div
         class="grid gap-8 justify-items-center items-stretch md:grid-cols-2 xl:grid-cols-3"

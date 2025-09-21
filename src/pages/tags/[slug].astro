@@ -1,0 +1,43 @@
+---
+import CardWithImage from "@/components/CardWithImage.astro";
+import LeftArrow from "@/images/simple-icons/left-arrow.svg";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { capitalize } from "@/utils/capitalize";
+import { getCollection } from "astro:content";
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect("/404");
+
+const AllBlogs = await getCollection("blog");
+
+// Filter blogs
+const filteredBlogs = AllBlogs.filter((blog) => blog.data.tags.includes(slug));
+---
+
+<MainLayout>
+  <section>
+    <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+      <a
+        href="/blogs"
+        class="not-prose text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center my-6 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      >
+        <LeftArrow
+          class="w-3.5 h-3.5 me-2"
+          aria-hidden="true"
+          fill="currentColor"
+        />
+        Back To All Blogs
+      </a>
+      <p class="text-2xl text-gray-900 dark:text-white mb-6">
+        Results For <span class="font-medium text-blue-600 dark:text-blue-500"
+          >#{capitalize(slug)}</span
+        >
+      </p>
+      <div
+        class="grid gap-8 justify-items-center items-stretch md:grid-cols-2 xl:grid-cols-3"
+      >
+        {filteredBlogs.map((blog) => <CardWithImage blog={blog} />)}
+      </div>
+    </div>
+  </section>
+</MainLayout>
